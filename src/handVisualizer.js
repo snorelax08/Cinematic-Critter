@@ -181,26 +181,26 @@ export class HandVisualizer {
     return Math.max(0, 1 - dist / 0.25);
   }
 
-  /** Detect if the hand is closed into a fist */
+  /** Detect if the hand is closed into a fist, ignoring the unreliable Z axis */
   isFist(handIdx = 0) {
     const wrist = this.getPosition(handIdx, 0);
     const midBase = this.getPosition(handIdx, 9);
     if (!wrist || !midBase) return false;
     
-    const palmDist = wrist.distanceTo(midBase);
-    let sumDist = 0;
+    // 2D distance ignoring Z (MediaPipe Z is synthetic and highly inaccurate)
+    const getDist2D = (p1, p2) => Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2);
+    const palmDist = getDist2D(wrist, midBase);
     
-    // Check distance from wrist to all four fingertips (index, middle, ring, pinky)
+    let sumDist = 0;
     for (const tipIdx of [8, 12, 16, 20]) {
       const tip = this.getPosition(handIdx, tipIdx);
       if (!tip) return false;
-      sumDist += wrist.distanceTo(tip);
+      sumDist += getDist2D(wrist, tip);
     }
     
     const avgTipDist = sumDist / 4;
     
-    // Open hand ratio is heavily > 2.0. 
-    // Even a sloppy fist should be < 1.6
+    // Open hand ratio is heavily > 2.0. Even a sloppy fist should be < 1.6
     return (avgTipDist / palmDist) < 1.6; 
   }
 

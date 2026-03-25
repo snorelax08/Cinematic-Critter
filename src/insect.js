@@ -428,7 +428,7 @@ export class Insect { // Exporting as Insect to avoid touching main.js imports
     // Cinematic Morphing State
     this.isTransforming = false;
     this.transitionTimer = 0;
-    this.transitionDuration = 1.0; // 1 second total
+    this.transitionDuration = 3.5; // 3.5 seconds total
     this.morphState = 0; // 0: Idle, 1: Build-up, 2: Dissolve, 3: Swirl/Reform
 
     // Hover logic

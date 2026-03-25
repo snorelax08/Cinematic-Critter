@@ -196,6 +196,12 @@ function animate() {
 
   insect.update(time, delta, pinchAmount);
 
+  // ── Keyboard Fallback Trigger (Press 'm' to morph) ───────────
+  if (window.pendingMorphTrigger && !insect.isTransforming) {
+    insect.triggerMorph();
+    window.pendingMorphTrigger = false;
+  }
+
   // ── Gesture Trigger for Transformation (Fist) ────────────────
   if (handTracker.numHands > 0) {
     const rIdx = rightHandLandmarks ? (handTracker.getHandedness(0) === 'Right' ? 0 : 1) : 0;
@@ -258,12 +264,19 @@ function animate() {
 // ══════════════════════════════════════════════════════════════════
 //  Resize Handler
 // ══════════════════════════════════════════════════════════════════
-window.addEventListener('resize', () => {
+function onWindowResize() {
   const w = window.innerWidth, h = window.innerHeight;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   composer.setSize(w, h);
+}
+window.addEventListener('resize', onWindowResize);
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'm' || e.key === 'M') {
+    window.pendingMorphTrigger = true;
+  }
 });
 
 // ══════════════════════════════════════════════════════════════════
