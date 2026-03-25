@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hand-Tracked Critter | Interactive 3D</title>
+  <meta name="description" content="Real-time hand-tracked 3D insect with particles, glow effects, and floating UI panels" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <canvas id="scene-canvas"></canvas>
+  <video id="webcam" autoplay playsinline></video>
+  <div id="loading-overlay">
+    <div class="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-text">
+        <span class="loader-title">Initializing</span>
+        <span id="loading-status">Loading hand tracking model...</span>
+      </div>
+    </div>
+  </div>
+  <div id="fps-counter">-- FPS</div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
